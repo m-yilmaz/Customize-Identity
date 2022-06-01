@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model List<ApplicationUser>
+@inject UserManager<ApplicationUser> userManager
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Dashboard</h1>
+<p>Welcome to Admin Panel</p>
+
+<h2>Users</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>User Name</td>
+            <td>Email Confirmed</td>
+            <td>Is Admin?</td>
+            <td>Roles</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@(user.EmailConfirmed ? "True" : "False" )</td>
+                <td>@(await userManager.IsInRoleAsync(user, "admin") ? "Yes" :"No")</td>
+                <td>@string.Join(" ,",(await userManager.GetRolesAsync(user)))</td>
+            </tr>
+        }
+    </tbody>
+</table>

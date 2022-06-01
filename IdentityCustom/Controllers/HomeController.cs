@@ -27,7 +27,7 @@ namespace IdentityCustom.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // userId getirir.
             return View();
         }
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public IActionResult Privacy()
         {
             return View();

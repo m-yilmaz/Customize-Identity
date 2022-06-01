@@ -127,9 +127,13 @@ namespace IdentityCustom.Areas.Identity.Pages.Account.Manage
                     Input.Photo.CopyTo(stream);
                 }
                 user.ImagePath = fileName;
-                string deletePath = Path.Combine(_env.WebRootPath, "img", oldImage);
-                if (System.IO.File.Exists(deletePath))
-                    System.IO.File.Delete(deletePath);
+                if (oldImage != null)
+                {
+                    string deletePath = Path.Combine(_env.WebRootPath, "img", oldImage);
+                    if (System.IO.File.Exists(deletePath))
+                        System.IO.File.Delete(deletePath);
+                }
+
             }
 
             var updateResult = await _userManager.UpdateAsync(user);
@@ -152,6 +156,6 @@ namespace IdentityCustom.Areas.Identity.Pages.Account.Manage
             path = Path.Combine(_env.WebRootPath, "img", fileName);
         }
 
-       
+
     }
 }
