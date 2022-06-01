@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using IdentityCustom.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@using System.Security.Claims
+
+@*Tavsiye edilmeyen yöntem*@
+@*@inject ApplicationDbContext db*@
+    @{
+        // yöntem 1 : Giriş yapmış bir kullanıcınıc bilgilerine  nasıl erişiriz?
+        var user = await UserManager.GetUserAsync(User);
+        var userId = UserManager.GetUserId(User);
+
+        //// yöntem 2
+        //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // kullanıcının ID getirir.
+        //var user = db.Users.Find(userId);
+    }
+
+<ul class="navbar-nav d-flex justify-content-center align-items-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><img class="rounded-circle" height="50" width="50" src="~/img/@user.ImagePath" alt="Profile Photo" /></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.FirstName @user.LastName!</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>
